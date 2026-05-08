@@ -231,7 +231,15 @@ function MultiStepForm() {
               </div>
               <button
                 type="button"
-                onClick={() => { if (form.canton && form.type && form.surface) setStep(2); }}
+                onClick={() => {
+                  console.log('Step 1 - Vérification:', { canton: form.canton, type: form.type, surface: form.surface });
+                  if (form.canton && form.type && form.surface) {
+                    console.log('Passage à l\'étape 2');
+                    setStep(2);
+                  } else {
+                    console.log('Champs manquants');
+                  }
+                }}
                 className="w-full bg-amber text-navy font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 hover:bg-amber/90 transition-all btn-shine mt-2"
               >
                 Continuer <ArrowRight className="w-4 h-4" />
@@ -621,10 +629,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { value: 3200, suffix: "+", label: "Installations réalisées" },
-              { value: 85, suffix: "%", label: "Taux de satisfaction" },
-              { value: 6, suffix: " ans", label: "Retour sur invest." },
-              { value: 2.8, suffix: "M CHF", label: "Subventions obtenues" },
+              { value: 107, suffix: "", label: "Estimations demandées" },
+              { value: 24, suffix: "h", label: "Réponse (jours ouvrables)" },
             ].map(({ value, suffix, label }) => (
               <div key={label}>
                 <div className="font-display text-3xl sm:text-4xl font-bold text-navy">
@@ -817,7 +823,7 @@ export default function Home() {
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
               ))}
-              <span className="text-slate-500 text-sm ml-2">4.9/5 · 312 avis vérifiés</span>
+              <span className="text-slate-500 text-sm ml-2">4.9/5 · Avis vérifiés</span>
             </div>
           </RevealSection>
 
