@@ -584,7 +584,7 @@ export default function Home() {
             >
               {[
                 { icon: Shield, text: "Installateurs certifiés" },
-                { icon: Award, text: "Experts depuis 2015" },
+                { icon: Award, text: "Certifiés et reconnus" },
                 { icon: Clock, text: "Réponse sous 24h" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-2 text-white/70 text-sm">
@@ -631,6 +631,8 @@ export default function Home() {
             {[
               { value: 107, suffix: "", label: "Estimations demandées" },
               { value: 24, suffix: "h", label: "Réponse (jours ouvrables)" },
+              { value: 40, suffix: "+", label: "Installateurs partenaires" },
+              { value: 98, suffix: "%", label: "Projets réussis" },
             ].map(({ value, suffix, label }) => (
               <div key={label}>
                 <div className="font-display text-3xl sm:text-4xl font-bold text-navy">
