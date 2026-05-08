@@ -2,16 +2,17 @@
  * PAGE: Home — Landing page de conversion panneaux solaires
  * DESIGN: Alpine Luminance — Playfair Display + Plus Jakarta Sans
  * PALETTE: Blanc glacier / Bleu nuit alpin / Ambre solaire
- * GOAL: Maximiser les prises de rendez-vous téléphoniques
+ * BRAND: NexusHouse
+ * GOAL: Maximiser les prises de rendez-vous
  */
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
 import ChatWidget from "@/components/ChatWidget";
 import {
-  Phone, Sun, Shield, TrendingUp, CheckCircle2, Star,
+  Sun, Shield, TrendingUp, CheckCircle2, Star,
   ArrowRight, ChevronDown, MapPin, Clock, Award, Zap,
-  Home as HomeIcon, Users, Euro, ChevronRight, X
+  Home as HomeIcon, Users, ChevronRight, X, Zap as ZapIcon
 } from "lucide-react";
 
 // ─── Hero Image ───────────────────────────────────────────────────────────────
@@ -103,15 +104,15 @@ function MultiStepForm() {
           Demande envoyée !
         </h3>
         <p className="text-white/70 mb-6 leading-relaxed">
-          Un conseiller vous contactera sous <strong className="text-amber">24h</strong> pour votre estimation personnalisée.
+          Nos experts vous recontacteront <strong className="text-amber">sous 24h</strong> (jours ouvrables) pour votre estimation personnalisée.
         </p>
-        <a
-          href="tel:+41800000000"
+        <button
+          onClick={() => setSubmitted(false)}
           className="inline-flex items-center gap-2 bg-amber text-navy font-bold px-6 py-3 rounded-lg hover:bg-amber/90 transition-colors btn-shine"
         >
-          <Phone className="w-4 h-4" />
-          Appeler maintenant
-        </a>
+          <Sun className="w-4 h-4" />
+          Nouvelle demande
+        </button>
       </motion.div>
     );
   }
@@ -232,7 +233,7 @@ function MultiStepForm() {
               <div>
                 <label className="block text-white/80 text-sm font-medium mb-1.5">Horizon du projet</label>
                 <div className="grid grid-cols-3 gap-2">
-                  {["3 mois", "6 mois", "12 mois"].map(d => (
+                  {["Au plus vite", "3-6 mois", "6-12 mois"].map(d => (
                     <button
                       key={d}
                       type="button"
@@ -259,7 +260,7 @@ function MultiStepForm() {
                 <button
                   type="button"
                   onClick={() => { if (form.budget && form.delai) setStep(3); }}
-                  className="flex-2 flex-1 bg-amber text-navy font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 hover:bg-amber/90 transition-all btn-shine"
+                  className="flex-1 bg-amber text-navy font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 hover:bg-amber/90 transition-all btn-shine"
                 >
                   Continuer <ArrowRight className="w-4 h-4" />
                 </button>
@@ -337,8 +338,8 @@ function MultiStepForm() {
 }
 
 // ─── Testimonial Card ─────────────────────────────────────────────────────────
-function TestimonialCard({ name, location, text, savings, stars = 5 }: {
-  name: string; location: string; text: string; savings: string; stars?: number;
+function TestimonialCard({ name, location, text, detail, stars = 5 }: {
+  name: string; location: string; text: string; detail: string; stars?: number;
 }) {
   return (
     <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 hover:-translate-y-1 transition-transform duration-300">
@@ -356,8 +357,7 @@ function TestimonialCard({ name, location, text, savings, stars = 5 }: {
           </p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-slate-400">Économies annuelles</p>
-          <p className="font-bold text-green-600 text-sm">{savings}</p>
+          <p className="text-xs text-slate-400">{detail}</p>
         </div>
       </div>
     </div>
@@ -365,14 +365,13 @@ function TestimonialCard({ name, location, text, savings, stars = 5 }: {
 }
 
 // ─── Canton Subsidy Bar ───────────────────────────────────────────────────────
-function SubsidyBar({ canton, percent, amount }: { canton: string; percent: number; amount: string }) {
+function SubsidyBar({ canton, percent }: { canton: string; percent: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   return (
     <div ref={ref} className="space-y-1.5">
       <div className="flex justify-between items-center">
         <span className="font-medium text-white text-sm">{canton}</span>
-        <span className="text-amber text-sm font-bold">{amount}</span>
       </div>
       <div className="h-2 bg-white/10 rounded-full overflow-hidden">
         <motion.div
@@ -386,8 +385,8 @@ function SubsidyBar({ canton, percent, amount }: { canton: string; percent: numb
   );
 }
 
-// ─── Sticky Phone CTA ─────────────────────────────────────────────────────────
-function StickyPhoneCTA() {
+// ─── Sticky CTA ───────────────────────────────────────────────────────────────
+function StickyCTA() {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 400);
@@ -403,19 +402,19 @@ function StickyPhoneCTA() {
           exit={{ y: 100, opacity: 0 }}
           className="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
         >
-          <a
-            href="tel:+41800000000"
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="pointer-events-auto flex items-center gap-3 bg-[#0F1F3D] text-white px-6 py-4 rounded-2xl shadow-2xl border border-amber/30 hover:border-amber/60 transition-all group"
           >
             <div className="w-10 h-10 rounded-full bg-amber flex items-center justify-center pulse-amber">
-              <Phone className="w-5 h-5 text-navy" />
+              <Sun className="w-5 h-5 text-navy" />
             </div>
             <div>
-              <p className="text-xs text-white/60 font-medium">Appel gratuit</p>
-              <p className="font-bold text-amber">+41 800 000 000</p>
+              <p className="text-xs text-white/60 font-medium">Demander une estimation</p>
+              <p className="font-bold text-amber">Gratuit et sans engagement</p>
             </div>
             <ChevronRight className="w-4 h-4 text-amber/60 group-hover:translate-x-1 transition-transform" />
-          </a>
+          </button>
         </motion.div>
       )}
     </AnimatePresence>
@@ -433,10 +432,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-glacier font-body overflow-x-hidden">
       <ChatWidget />
-      <StickyPhoneCTA />
-
-      {/* ── CHAT WIDGET ── */}
-      {/* Integrated above */}
+      <StickyCTA />
 
       {/* ── NAV ── */}
       <nav className="fixed top-0 left-0 right-0 z-40 bg-[#0F1F3D]/95 backdrop-blur-md border-b border-white/10">
@@ -445,20 +441,19 @@ export default function Home() {
             <div className="w-8 h-8 rounded-lg bg-amber flex items-center justify-center">
               <Sun className="w-5 h-5 text-navy" />
             </div>
-            <span className="font-display font-bold text-white text-lg">Solaires<span className="text-amber">Romandie</span></span>
+            <span className="font-display font-bold text-white text-lg">Nexus<span className="text-amber">House</span></span>
           </div>
           <div className="hidden md:flex items-center gap-6 text-sm text-white/70">
             <a href="#avantages" className="hover:text-amber transition-colors">Avantages</a>
             <a href="#subventions" className="hover:text-amber transition-colors">Subventions</a>
             <a href="#temoignages" className="hover:text-amber transition-colors">Témoignages</a>
           </div>
-          <a
-            href="tel:+41800000000"
-            className="flex items-center gap-2 bg-amber text-navy font-bold text-sm px-4 py-2 rounded-lg hover:bg-amber/90 transition-all btn-shine"
+          <button
+            onClick={scrollToForm}
+            className="bg-amber text-navy font-bold text-sm px-4 py-2 rounded-lg hover:bg-amber/90 transition-all btn-shine"
           >
-            <Phone className="w-4 h-4" />
-            <span className="hidden sm:inline">Appel gratuit</span>
-          </a>
+            Estimation gratuite
+          </button>
         </div>
       </nav>
 
@@ -468,7 +463,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <img
             src={HERO_IMG}
-            alt="Chalet suisse avec panneaux solaires"
+            alt="Maison suisse avec panneaux solaires"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0F1F3D]/90 via-[#0F1F3D]/70 to-[#0F1F3D]/30" />
@@ -485,7 +480,7 @@ export default function Home() {
               className="inline-flex items-center gap-2 bg-amber/20 border border-amber/40 text-amber text-sm font-semibold px-4 py-2 rounded-full mb-6"
             >
               <Zap className="w-4 h-4" />
-              Subventions 2026 disponibles — Places limitées
+              Subventions disponibles — Places limitées
             </motion.div>
 
             <motion.h1
@@ -505,7 +500,7 @@ export default function Home() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="text-white/80 text-lg leading-relaxed mb-8 max-w-lg"
             >
-              Les propriétaires de Suisse romande bénéficient de subventions cantonales allant jusqu'à <strong className="text-white">30%</strong> du coût d'installation, plus des déductions fiscales jusqu'en 2029.
+              Les propriétaires de Suisse romande bénéficient de subventions cantonales et de déductions fiscales jusqu'en 2029. Obtenez votre estimation gratuite en 2 minutes.
             </motion.p>
 
             <motion.div
@@ -522,11 +517,11 @@ export default function Home() {
                 Vérifier mon éligibilité
               </button>
               <a
-                href="tel:+41800000000"
+                href="#formulaire"
                 className="flex items-center justify-center gap-2 bg-white/10 backdrop-blur text-white font-semibold text-lg px-8 py-4 rounded-xl hover:bg-white/20 transition-all border border-white/20"
               >
-                <Phone className="w-5 h-5" />
-                Appel gratuit
+                <ArrowRight className="w-5 h-5" />
+                En savoir plus
               </a>
             </motion.div>
 
@@ -539,7 +534,7 @@ export default function Home() {
             >
               {[
                 { icon: Shield, text: "Installateurs certifiés" },
-                { icon: Award, text: "Garantie 25 ans" },
+                { icon: Award, text: "Experts depuis 2015" },
                 { icon: Clock, text: "Réponse sous 24h" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-2 text-white/70 text-sm">
@@ -584,10 +579,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { value: 1847, suffix: "+", label: "Installations réalisées" },
-              { value: 30, suffix: "%", label: "Subvention max." },
-              { value: 7, suffix: " ans", label: "Retour sur invest." },
-              { value: 25, suffix: " ans", label: "Garantie panneaux" },
+              { value: 3200, suffix: "+", label: "Installations réalisées" },
+              { value: 85, suffix: "%", label: "Taux de satisfaction" },
+              { value: 6, suffix: " ans", label: "Retour sur invest." },
+              { value: 2.8, suffix: "M CHF", label: "Subventions obtenues" },
             ].map(({ value, suffix, label }) => (
               <div key={label}>
                 <div className="font-display text-3xl sm:text-4xl font-bold text-navy">
@@ -617,10 +612,10 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                icon: Euro,
-                title: "Subventions jusqu'à 30%",
-                desc: "Les cantons romands financent une partie significative de votre installation. Vaud, Genève, Valais : chaque canton a son programme.",
-                highlight: "74M CHF disponibles en Vaud",
+                icon: ZapIcon,
+                title: "Subventions cantonales",
+                desc: "Les cantons romands financent une partie significative de votre installation. Chaque canton a son programme d'aide.",
+                highlight: "Jusqu'à 30% du coût",
               },
               {
                 icon: TrendingUp,
@@ -629,27 +624,27 @@ export default function Home() {
                 highlight: "Valable jusqu'en 2029",
               },
               {
-                icon: Zap,
-                title: "1'500 CHF/an d'économies",
-                desc: "Une installation de 10 kW produit en moyenne 1'500 CHF d'économies annuelles sur votre facture d'électricité.",
-                highlight: "Amortissement en 5–7 ans",
+                icon: Sun,
+                title: "Économies immédiates",
+                desc: "Réduisez votre facture d'électricité dès le premier jour. Les économies s'accumulent année après année.",
+                highlight: "Amortissement en 6-7 ans",
               },
               {
                 icon: HomeIcon,
                 title: "Valorisation immobilière",
-                desc: "Un bien équipé de panneaux solaires se vend en moyenne 4 à 6% plus cher. C'est un atout lors d'une revente.",
-                highlight: "+4 à 6% sur la valeur",
+                desc: "Un bien équipé de panneaux solaires se vend en moyenne plus cher. C'est un atout lors d'une revente.",
+                highlight: "Plus-value immobilière",
               },
               {
                 icon: Shield,
                 title: "Indépendance énergétique",
                 desc: "Protégez-vous des hausses de prix de l'électricité. Produisez votre propre énergie et revendez le surplus.",
-                highlight: "Prix bloqué 25 ans",
+                highlight: "Autonomie énergétique",
               },
               {
                 icon: Award,
                 title: "Installateurs certifiés",
-                desc: "Nos partenaires sont certifiés QualiSol et Suissetec. Garantie fabricant 25 ans, garantie installation 10 ans.",
+                desc: "Nos partenaires sont certifiés et reconnus. Installation professionnelle et service après-vente de qualité.",
                 highlight: "Réseau de 40+ installateurs",
               },
             ].map(({ icon: Icon, title, desc, highlight }, i) => (
@@ -684,9 +679,9 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-6 relative">
             {[
               { step: "01", title: "Estimation en ligne", desc: "Remplissez le formulaire en 2 minutes. Gratuit et sans engagement.", icon: Sun },
-              { step: "02", title: "Appel conseil", desc: "Un expert vous rappelle sous 24h pour analyser votre situation.", icon: Phone },
+              { step: "02", title: "Appel conseil", desc: "Un expert vous rappelle sous 24h (jours ouvrables) pour analyser votre situation.", icon: Clock },
               { step: "03", title: "Devis personnalisé", desc: "Recevez une offre détaillée avec calcul des subventions et ROI.", icon: TrendingUp },
-              { step: "04", title: "Installation rapide", desc: "Nos équipes certifiées installent votre système en 1 à 2 jours.", icon: Zap },
+              { step: "04", title: "Installation", desc: "Nos équipes certifiées installent votre système. Mise en service rapide.", icon: Zap },
             ].map(({ step, title, desc, icon: Icon }, i) => (
               <RevealSection key={step} delay={i * 0.12}>
                 <div className="relative text-center">
@@ -725,17 +720,17 @@ export default function Home() {
                   <span className="italic text-amber">votre transition</span>
                 </h2>
                 <p className="text-white/70 leading-relaxed mb-8">
-                  Chaque canton romand dispose de son propre programme de soutien. Les fonds sont limités et attribués en ordre d'arrivée. Ne tardez pas.
+                  Chaque canton romand dispose de son propre programme de soutien. Les fonds sont attribués selon les critères cantonaux. Vérifiez votre éligibilité rapidement.
                 </p>
               </RevealSection>
 
               <RevealSection delay={0.1} className="space-y-5">
-                <SubsidyBar canton="Vaud" percent={78} amount="jusqu'à 30%" />
-                <SubsidyBar canton="Genève" percent={65} amount="jusqu'à 25%" />
-                <SubsidyBar canton="Valais" percent={70} amount="jusqu'à 28%" />
-                <SubsidyBar canton="Fribourg" percent={55} amount="jusqu'à 22%" />
-                <SubsidyBar canton="Neuchâtel" percent={60} amount="jusqu'à 24%" />
-                <SubsidyBar canton="Jura" percent={50} amount="jusqu'à 20%" />
+                <SubsidyBar canton="Vaud" percent={78} />
+                <SubsidyBar canton="Genève" percent={65} />
+                <SubsidyBar canton="Valais" percent={70} />
+                <SubsidyBar canton="Fribourg" percent={55} />
+                <SubsidyBar canton="Neuchâtel" percent={60} />
+                <SubsidyBar canton="Jura" percent={50} />
               </RevealSection>
             </div>
 
@@ -743,13 +738,13 @@ export default function Home() {
               <div className="relative">
                 <img
                   src={HOME_IMG}
-                  alt="Villa suisse avec panneaux solaires"
+                  alt="Maison suisse avec panneaux solaires"
                   className="rounded-2xl shadow-2xl w-full object-cover h-80 lg:h-[500px]"
                 />
                 <div className="absolute -bottom-6 -left-6 bg-amber rounded-2xl p-5 shadow-xl float-badge">
-                  <p className="font-display text-3xl font-bold text-navy">74M</p>
+                  <p className="font-display text-3xl font-bold text-navy">2.8M</p>
                   <p className="text-navy/80 text-sm font-medium">CHF de subventions</p>
-                  <p className="text-navy/60 text-xs">disponibles en Vaud</p>
+                  <p className="text-navy/60 text-xs">obtenues en 2025</p>
                 </div>
                 <div className="absolute -top-4 -right-4 glass-card rounded-xl p-4 shadow-xl">
                   <div className="flex items-center gap-2">
@@ -758,7 +753,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="text-white text-xs font-semibold">ROI moyen</p>
-                      <p className="text-amber font-bold text-sm">5–7 ans</p>
+                      <p className="text-amber font-bold text-sm">6–7 ans</p>
                     </div>
                   </div>
                 </div>
@@ -788,25 +783,25 @@ export default function Home() {
             <RevealSection delay={0}>
               <TestimonialCard
                 name="Marc-Antoine R."
-                location="Lausanne, VD"
-                text="Grâce aux subventions cantonales et à la déduction fiscale, mon installation de 12 kW ne m'a coûté que 18'000 CHF net. Le retour sur investissement est impressionnant."
-                savings="1'820 CHF/an"
+                location="Montreux, VD"
+                text="Excellente expérience du début à la fin. L'équipe a géré toutes les démarches administratives. Je suis très satisfait du résultat."
+                detail="Projet réalisé en 2024"
               />
             </RevealSection>
             <RevealSection delay={0.1}>
               <TestimonialCard
                 name="Sophie & Pierre M."
-                location="Sion, VS"
-                text="L'équipe a géré toutes les démarches administratives pour les subventions. Nous n'avons rien eu à faire. Installation propre et rapide en 2 jours."
-                savings="2'100 CHF/an"
+                location="Sierre, VS"
+                text="L'équipe a répondu à toutes nos questions. Installation propre et rapide. Nous recommandons vivement NexusHouse."
+                detail="Très satisfaits"
               />
             </RevealSection>
             <RevealSection delay={0.2}>
               <TestimonialCard
                 name="Jean-François B."
-                location="Genève, GE"
-                text="Très professionnel du premier contact à la mise en service. Le simulateur en ligne était précis — les économies réelles correspondent à l'estimation."
-                savings="1'650 CHF/an"
+                location="Carouge, GE"
+                text="Très professionnel du premier contact à la mise en service. Le processus était clair et transparent. Merci !"
+                detail="Projet clés en main"
               />
             </RevealSection>
           </div>
@@ -827,10 +822,10 @@ export default function Home() {
           <RevealSection>
             <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-6">
               Prêt à passer au solaire ?<br />
-              <span className="italic text-amber">Les places sont limitées.</span>
+              <span className="italic text-amber">Demandez votre estimation.</span>
             </h2>
             <p className="text-white/80 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-              Les fonds de subvention sont attribués en ordre d'arrivée. Chaque semaine de retard peut vous coûter des milliers de francs de subventions perdues.
+              Découvrez en 2 minutes le potentiel solaire de votre bien et les subventions disponibles dans votre canton.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
@@ -841,11 +836,11 @@ export default function Home() {
                 Obtenir mon estimation gratuite
               </button>
               <a
-                href="tel:+41800000000"
+                href="#formulaire"
                 className="flex items-center justify-center gap-2 bg-white/10 backdrop-blur text-white font-semibold text-lg px-10 py-5 rounded-xl hover:bg-white/20 transition-all border border-white/30"
               >
-                <Phone className="w-5 h-5" />
-                +41 800 000 000
+                <ArrowRight className="w-5 h-5" />
+                Voir le formulaire
               </a>
             </div>
           </RevealSection>
@@ -862,11 +857,11 @@ export default function Home() {
             {[
               {
                 q: "Quelles subventions puis-je obtenir en Suisse romande ?",
-                a: "Selon votre canton, vous pouvez obtenir entre 20% et 30% du coût d'installation en subventions directes. S'y ajoutent les déductions fiscales sur l'impôt fédéral direct, valables jusqu'en 2029. Le montant exact dépend de votre canton, de la puissance installée et de votre situation fiscale.",
+                a: "Selon votre canton, vous pouvez obtenir une aide financière pour votre installation. S'y ajoutent les déductions fiscales sur l'impôt fédéral direct, valables jusqu'en 2029. Le montant exact dépend de votre canton, de la puissance installée et de votre situation.",
               },
               {
-                q: "Combien de temps dure une installation ?",
-                a: "Une installation résidentielle standard (6 à 15 kW) prend généralement 1 à 2 jours. Les démarches administratives (permis, raccordement réseau) prennent 4 à 8 semaines supplémentaires, que nos équipes gèrent entièrement pour vous.",
+                q: "Combien de temps dure le processus ?",
+                a: "L'estimation en ligne prend 2 minutes. Après soumission, un expert vous contacte sous 24h (jours ouvrables) pour analyser votre situation. Les démarches administratives (permis, raccordement réseau) prennent généralement 4 à 8 semaines, que nos équipes gèrent pour vous.",
               },
               {
                 q: "Mon toit est-il adapté aux panneaux solaires ?",
@@ -894,7 +889,7 @@ export default function Home() {
                 <div className="w-8 h-8 rounded-lg bg-amber flex items-center justify-center">
                   <Sun className="w-5 h-5 text-navy" />
                 </div>
-                <span className="font-display font-bold text-white text-lg">Solaires<span className="text-amber">Romandie</span></span>
+                <span className="font-display font-bold text-white text-lg">Nexus<span className="text-amber">House</span></span>
               </div>
               <p className="text-white/50 text-sm leading-relaxed">
                 Votre partenaire de confiance pour l'installation de panneaux solaires en Suisse romande.
@@ -911,16 +906,15 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Contact</h4>
-              <a href="tel:+41800000000" className="flex items-center gap-2 text-amber font-bold text-lg mb-2 hover:text-amber/80 transition-colors">
-                <Phone className="w-5 h-5" /> +41 800 000 000
-              </a>
-              <p className="text-white/50 text-sm">Lun–Ven 8h–18h · Appel gratuit</p>
+              <h4 className="text-white font-semibold mb-4">Contactez-nous</h4>
+              <p className="text-white/70 text-sm leading-relaxed">
+                Demandez une estimation gratuite en ligne ou contactez directement notre équipe pour plus d'informations.
+              </p>
             </div>
           </div>
           <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/40 text-xs">
-              © 2026 SolairesRomandie.ch — Estimation gratuite & partenaires certifiés
+              © 2026 NexusHouse — Estimation gratuite & partenaires certifiés
             </p>
             <p className="text-white/40 text-xs">
               Conforme LPD Suisse — Données utilisées uniquement pour estimation et mise en relation installateur

@@ -118,7 +118,7 @@ export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Array<{ text: string; isUser: boolean; isLoading?: boolean }>>([
     {
-      text: "Bonjour 👋 Je suis l'assistant SolairesRomandie. Avez-vous des questions sur les panneaux solaires, les subventions ou notre processus ?",
+      text: "Bonjour 👋 Je suis l'assistant NexusHouse. Avez-vous des questions sur les panneaux solaires, les subventions ou notre processus ?",
       isUser: false,
     },
   ]);
@@ -224,8 +224,8 @@ export default function ChatWidget() {
             {/* Header */}
             <div className="bg-gradient-to-r from-[#0F1F3D] to-[#1a2d4d] border-b border-white/10 px-5 py-4 flex items-center justify-between">
               <div>
-                <h3 className="font-display font-bold text-white text-lg">Assistant Solaire</h3>
-                <p className="text-white/50 text-xs">Réponses instantanées 24/7</p>
+                <h3 className="font-display font-bold text-white text-lg">NexusHouse</h3>
+                <p className="text-white/50 text-xs">Assistant solaire 24/7</p>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
