@@ -631,8 +631,8 @@ export default function Home() {
             {[
               { value: 107, suffix: "", label: "Estimations demandées" },
               { value: 24, suffix: "h", label: "Réponse (jours ouvrables)" },
-              { value: 40, suffix: "+", label: "Installateurs partenaires" },
-              { value: 98, suffix: "%", label: "Projets réussis" },
+              { value: 1.8, suffix: " GW", label: "Puissance installée 2024" },
+              { value: 11, suffix: "%", label: "Couverture électrique CH" },
             ].map(({ value, suffix, label }) => (
               <div key={label}>
                 <div className="font-display text-3xl sm:text-4xl font-bold text-navy">
