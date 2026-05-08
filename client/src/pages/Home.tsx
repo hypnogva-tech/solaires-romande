@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
+import ChatWidget from "@/components/ChatWidget";
 import {
   Phone, Sun, Shield, TrendingUp, CheckCircle2, Star,
   ArrowRight, ChevronDown, MapPin, Clock, Award, Zap,
@@ -431,7 +432,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-glacier font-body overflow-x-hidden">
+      <ChatWidget />
       <StickyPhoneCTA />
+
+      {/* ── CHAT WIDGET ── */}
+      {/* Integrated above */}
 
       {/* ── NAV ── */}
       <nav className="fixed top-0 left-0 right-0 z-40 bg-[#0F1F3D]/95 backdrop-blur-md border-b border-white/10">
