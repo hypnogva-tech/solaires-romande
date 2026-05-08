@@ -9,6 +9,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
 import ChatWidget from "@/components/ChatWidget";
+import { trpc } from "@/lib/trpc";
 import {
   Sun, Shield, TrendingUp, CheckCircle2, Star,
   ArrowRight, ChevronDown, MapPin, Clock, Award, Zap,
@@ -82,12 +83,32 @@ function MultiStepForm() {
     canton: "", type: "", surface: "", budget: "", delai: "",
     nom: "", tel: "", email: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const update = (key: string, val: string) => setForm(f => ({ ...f, [key]: val }));
+  const submitLeadMutation = trpc.leads.submit.useMutation();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    try {
+      await submitLeadMutation.mutateAsync({
+        canton: form.canton,
+        type: form.type,
+        surface: parseInt(form.surface),
+        budget: form.budget,
+        delai: form.delai,
+        nom: form.nom,
+        tel: form.tel,
+        email: form.email,
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Erreur lors de la soumission:", error);
+      alert("Une erreur s'est produite. Veuillez réessayer.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -100,12 +121,20 @@ function MultiStepForm() {
         <div className="w-16 h-16 rounded-full bg-amber/20 flex items-center justify-center mx-auto mb-5">
           <CheckCircle2 className="w-8 h-8 text-amber" />
         </div>
-        <h3 className="font-display text-2xl font-bold text-white mb-3">
-          Demande envoyée !
+        <h3 className="font-display text-3xl font-bold text-white mb-2">
+          Merci !
         </h3>
-        <p className="text-white/70 mb-6 leading-relaxed">
-          Nos experts vous recontacteront <strong className="text-amber">sous 24h</strong> (jours ouvrables) pour votre estimation personnalisée.
+        <p className="text-amber font-semibold text-lg mb-6">
+          Votre demande d'estimation a été reçue
         </p>
+        <div className="bg-white/5 border border-amber/30 rounded-lg p-6 mb-6 text-left space-y-3">
+          <p className="text-white/80 leading-relaxed">
+            Nos experts NexusHouse vont analyser votre situation et vous recontacteront <strong className="text-amber">sous 24h (jours ouvrables)</strong> pour discuter de votre projet solaire.
+          </p>
+          <p className="text-white/60 text-sm">
+            📧 Vous recevrez un email de confirmation à l'adresse fournie.
+          </p>
+        </div>
         <button
           onClick={() => setSubmitted(false)}
           className="inline-flex items-center gap-2 bg-amber text-navy font-bold px-6 py-3 rounded-lg hover:bg-amber/90 transition-colors btn-shine"
@@ -323,10 +352,20 @@ function MultiStepForm() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-amber text-navy font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 hover:bg-amber/90 transition-all btn-shine pulse-amber"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-amber text-navy font-bold py-3.5 rounded-lg flex items-center justify-center gap-2 hover:bg-amber/90 disabled:opacity-50 transition-all btn-shine pulse-amber"
                 >
-                  <Sun className="w-4 h-4" />
-                  Obtenir mon estimation
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin">⏳</span>
+                      Envoi...
+                    </>
+                  ) : (
+                    <>
+                      <Sun className="w-4 h-4" />
+                      Obtenir mon estimation
+                    </>
+                  )}
                 </button>
               </div>
             </motion.div>
