@@ -8,8 +8,8 @@
 - [x] Backend tRPC avec base de données
 
 ## In Progress
-- [ ] Configurer envoi d'email à contact@fluxclients.ch
-- [ ] Créer page de remerciement personnalisée
+- [x] Configurer envoi d'email à contact@fluxclients.ch
+- [x] Créer page de remerciement personnalisée
 
 ## Backlog
 - [ ] Intégrer calculateur ROI interactif

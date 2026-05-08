@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
+import { useLocation } from "wouter";
 import ChatWidget from "@/components/ChatWidget";
 import { trpc } from "@/lib/trpc";
 import {
@@ -87,6 +88,7 @@ function MultiStepForm() {
 
   const update = (key: string, val: string) => setForm(f => ({ ...f, [key]: val }));
   const submitLeadMutation = trpc.leads.submit.useMutation();
+  const [, setLocation] = useLocation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +104,8 @@ function MultiStepForm() {
         tel: form.tel,
         email: form.email,
       });
-      setSubmitted(true);
+      sessionStorage.setItem("lastLeadData", JSON.stringify(form));
+      setLocation("/merci");
     } catch (error) {
       console.error("Erreur lors de la soumission:", error);
       alert("Une erreur s'est produite. Veuillez réessayer.");
